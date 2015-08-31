@@ -1,11 +1,3 @@
-/*
-        *File: DockerSandbox.js
-        *Author: Osman Ali Mian/Asad Memon
-        *Created: 3rd June 2014
-        *Revised on: 25th June 2014 (Added folder mount permission and changed executing user to nobody using -u argument)
-        *Revised on: 30th June 2014 (Changed the way errors are logged on console, added language name into error messages)
-*/
-
 
 /**
          * @Constructor
