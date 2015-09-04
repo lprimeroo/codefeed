@@ -15,8 +15,10 @@ RUN apt-get install -y gcc
 RUN apt-get install -y g++
 RUN apt-get install -y ruby
 RUN apt-get install -y python
-
-
+RUN apt-get install -y nodejs 
+RUN apt-get install -y npm
+RUN apt-get install -y git
+RUN npm install -g underscore request express jade shelljs passport http sys jquery lodash async mocha moment connect validator restify ejs ws co when helmet wrench brain mustache should backbone forever  debug && export NODE_PATH=/usr/local/lib/node_modules/
 
 #prepare for Java download
 
@@ -31,8 +33,6 @@ RUN add-apt-repository -y ppa:webupd8team/java
 RUN apt-get update
 RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 RUN apt-get install -y oracle-java7-installer
-
-RUN apt-get install -y gnustep-devel &&  sed -i 's/#define BASE_NATIVE_OBJC_EXCEPTIONS     1/#define BASE_NATIVE_OBJC_EXCEPTIONS     0/g' /usr/include/GNUstep/GNUstepBase/GSConfig.h
 
 RUN apt-get install -y mysql-server
 RUN apt-get install -y sudo

@@ -7,6 +7,6 @@
     "express-brute":"*",
     "exports": "*"
   },
-  "author": "Osman Ali",
+  "author": "Sarthak Munshi",
   "license": "MIT"
 }
