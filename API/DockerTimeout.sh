@@ -5,11 +5,11 @@ to=$1
 shift
 
 cont=$(docker run -d "$@")
-code=$(timeout "$to" docker wait "$cont" || true)
+code=$(gtimeout "$to" docker wait "$cont" || true)
 docker kill $cont &> /dev/null
 echo -n 'status: '
 if [ -z "$code" ]; then
-    echo timeout
+    echo gtimeout
 else
     echo exited: $code
 fi
