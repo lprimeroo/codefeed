@@ -1,0 +1,16 @@
+
+<% data.forEach(function(dbData){ 
+var pid=dbData.problem_id
+var pname=dbData.problem_name
+var pstmt=dbData.problem_statement 
+	%>
+		  <%= pid %>
+		  <br>
+          <%= pname %>
+          <br>
+          <%= pstmt%>
+          <br>
+<% }); 
+%>
+
+

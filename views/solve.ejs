@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Codefeed - Share and Solve</title>
+ <link rel="stylesheet" href="/loggedinhome.css">
+ <link rel="stylesheet" href="/solve.css">
+</head>
+<body>
+<nav class="nav">
+   <ul class="nav__wrap">
+      <li class="nav__list"><a href="/loggedinhome" class="nav__link">Home</a></li>
+      <li class="nav__list"><a href="/add" class="nav__link">Add a problem</a></li>
+      <li class="nav__list"><a href="/viewproblist" class="nav__link">View solved problems</a></li>
+      <li class="nav__list"><a href="/logout" class="nav__link">Logout</a></li>
+   </ul>
+</nav> 
+
+<main class="content">
+  <input type="text" name="post" id="problem_name" placeholder="Test Cases Go here !" />
+  <h2>Change Editor Theme : </h2><br />
+  <select id="colors">
+    <option value="github">Github</option>
+    <option value="ambiance">Ambiance</option>
+    <option value="chaos">Chaos</option>
+    <option value="chrome">Chrome</option>
+    <option value="clouds">Clouds</option>
+    <option value="cobalt">Cobalt</option>
+    <option value="dawn">Dawn</option>
+    <option value="dreamweaver">Dreamweaver</option>
+    <option value="eclipse">Eclipse</option>
+    <option value="iplastic">iPlastic</option>
+    <option value="kuroir">Kuroir</option>
+    <option value="merbivore">Merbivore</option>
+    <option value="monokai">Monokai</option>
+    <option value="sqlserver">SQLServer</option>
+    <option value="terminal">Terminal</option>
+    <option value="textmate">Textmate</option>
+    <option value="twilight">Twilight</option>
+    <option value="vibrantink">Vibrant Ink</option>
+    <option value="xcode">Xcode</option>
+    </select>
+    <textarea type="text" name="post" id="text-box" placeholder="Test Cases Go here !"></textarea>
+    <p id="output"></p>
+  <br /><br /><br /><br /><br />
+  <h2>Change Language :</h2><br />
+  <select id="lang">
+    <option value="python">Python</option>
+    <option value="cpp">C++</option>
+    <option value="java">Java</option>
+    <option value="ruby">Ruby</option>    
+  </select><br/ > <br /><br /> <br/>
+  <button id="submit" class="testbutton">Test Code</button><br /><br /><br /><br />
+  <button id="submit" class="finalsubmit">Submit Solution</button>
+    <div id="editor" style="position: absolute; left: 50%;">def hi():
+    print "hi"
+
+hi()
+</div>
+</main>
+
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>  
+<script type="text/javascript" src="/loggedinhome.js"></script> 
+<script src="/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var languageid = 0;
+    var correctness = false;
+    var DATA ;
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/github");
+    editor.getSession().setMode("ace/mode/python");
+    document.getElementById('editor').style.fontSize='14px';
+    $('#colors').change(function() {
+      var selectedValue = $(this).val();
+      switch(selectedValue) {
+        case "github":
+          editor.setTheme("ace/theme/github");
+          break;
+        case "ambiance":
+          editor.setTheme("ace/theme/ambiance");
+          break;
+        case "chaos":
+          editor.setTheme("ace/theme/chaos");
+          break;
+        case "chrome":
+          editor.setTheme("ace/theme/chrome");
+          break;
+        case "clouds":
+          editor.setTheme("ace/theme/clouds");
+          break;
+        case "cobalt":
+          editor.setTheme("ace/theme/cobalt");
+          break;
+        case "dawn":
+          editor.setTheme("ace/theme/dawn");
+          break;
+        case "dreamweaver":
+          editor.setTheme("ace/theme/dreamweaver");
+          break;
+        case "eclipse":
+          editor.setTheme("ace/theme/eclipse");
+          break;
+        case "iplastic":
+          editor.setTheme("ace/theme/iplastic");
+          break;
+        case "kuroir":
+          editor.setTheme("ace/theme/kuroir");
+          break;
+        case "merbivore":
+          editor.setTheme("ace/theme/merbivore");
+          break;
+        case "monokai":
+          editor.setTheme("ace/theme/monokai");
+          break;
+        case "sqlserver":
+          editor.setTheme("ace/theme/sqlserver");
+          break;
+        case "terminal":
+          editor.setTheme("ace/theme/terminal");
+          break;
+        case "textmate":
+          editor.setTheme("ace/theme/textmate");
+          break;
+        case "twilight":
+          editor.setTheme("ace/theme/twilight");
+          break;
+        case "vibrantink":
+          editor.setTheme("ace/theme/vibrant_ink");
+          break;
+        case "xcode":
+          editor.setTheme("ace/theme/xcode");
+          break;
+      }
+    }) ;
+
+    $('#lang').change(function() {
+      var selectedLang = $(this).val();
+      switch(selectedLang) {
+        case "python":
+          editor.getSession().setMode("ace/mode/python");
+          editor.setValue("def hello():\n    print \"Hello!\"\n\nhello()");
+          languageid = 0 ;
+          break;
+        case "cpp":
+          editor.getSession().setMode("ace/mode/c_cpp");
+          editor.setValue("#include<iostream>\n\nusing namespace std;\n\nint main() {\n    cout<<\"Hello\";\n    return 0;\n}");
+          languageid = 7 ;
+          break;
+        case "java":
+          editor.getSession().setMode("ace/mode/java");
+          editor.setValue("public class Main() {\n    public static void main(String[] args){\n        System.out.print(\"Hello!\");\n  }\n}");
+          languageid = 8 ;
+          break;
+        case "ruby":
+          editor.getSession().setMode("ace/mode/ruby");
+          editor.setValue("puts \"Hello!\"");
+          languageid = 1 ;
+          break;
+      }
+    });
+  $('.testbutton').on('click', function() {
+        var langid = languageid;
+        var codeF = editor.getValue() ;
+        var stdin = $('#text-box').val();
+ 
+        var json = {
+            language: langid,
+            code: codeF,
+            stdin:stdin
+        };
+        console.log(json);
+ 
+        $.post("/compile", json, function(data, error, xhr) {
+            var correctness = true ;
+            DATA = data.output;
+            document.getElementById("output").innerHTML = data.output;
+        });
+    });
+
+  $('.finalsubmit').click(function() {
+                var name = $('#problem_name').val();
+                console.log(name)
+                var json2 = {
+                    problem_name : name,
+                    output: DATA
+                 } 
+               $.post("/checkSolution",json2, function(dat,err,xh){
+
+               });
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Welcome to Codefeed - Share and Solve</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/loggedinhome.css" />
+    <link rel="stylesheet" href="/add.css" />
+  </head>
+
+  <body>
+
+    <nav class="nav">
+   <ul class="nav__wrap">
+      <li class="nav__list"><a href="/loggedinhome" class="nav__link">Home</a></li>
+      <li class="nav__list"><a href="/add" class="nav__link">Add a problem</a></li>
+      <li class="nav__list"><a href="/viewproblist" class="nav__link">View solved problems</a></li>
+      <li class="nav__list"><a href="/logout" class="nav__link">Logout</a></li>
+   </ul>
+</nav>   
+
+<main class="content">
+    <div id="form-container">
+        <form action="#" autocomplete="on">
+            <input class="name-box" type="text" name="problemtitle" placeholder="Problem Title" id="prob_name"><br />
+            <textarea class="message-box" placeholder="Problem Statement" id="prob_statement"></textarea><br />
+            <textarea class="message-box" placeholder="Problem Input" id="prob_input"></textarea><br />
+            <textarea class="message-box" placeholder="Problem Output" id="prob_output"></textarea><br />
+            <input class="animated bounceIn" type="submit" value="Add this Problem" id="submitprob">
+        </form>
+  </div>
+</main>
+    
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>  
+    <script type="text/javascript" src="/loggedinhome.js"></script> 
+    <script>
+        $('#submitprob').on('click', function() {
+ 
+        var pname = $('#prob_name').val();
+        var pstatement = $('#prob_statement').val();
+        var pinput = $('#prob_input').val();
+        var poutput= $('#prob_output').val();
+ 
+        var json = {
+            problem_name: pname,
+            problem_statement:pstatement,
+            problem_input: pinput,
+            problem_output: poutput
+        };
+        console.log(json);
+ 
+        $.post("/saveproblem", json, function(data, error, xhr) {
+            alert("Problem Added !");
+        });
+        
+    });
+    </script>
+  </body>
+</html>
+ 
+

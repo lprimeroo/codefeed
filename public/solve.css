@@ -1,0 +1,54 @@
+    #editor { 
+        position: absolute;
+        top: 10%;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+  select {
+  	display: block;
+	  position: relative;
+	  right: 38%;		
+	  outline: none;
+	  -webkit-appearance: none;
+	  font: 14px 'Open Sans', sans-serif;
+	  cursor: pointer;
+	  color: #3C434A;
+	  border-color: #A6AFB7;
+	  min-width: 256px;
+	  padding: 8px 16px;
+	  border-radius: 3px;
+	  background: #FFFFFF url('http://i.imgur.com/hRbauFc.png') no-repeat scroll right center;
+}
+
+select:hover, select:active {
+  	border-color: #85929D;
+}
+
+h2 {
+	position: relative;
+	right: 35%;
+}
+
+#submit {
+  	position: relative;
+	left: -17%;  
+	float: left;
+}
+
+textarea {
+	position: absolute;
+	display: inline-block ;
+	resize: none;
+	right: 52%;
+	width: 250px;
+	height: 250px;
+}
+
+#output {
+	display: inline-block;
+	position: absolute;
+	top: 70%;
+	left: 30%;
+}
