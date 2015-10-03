@@ -153,7 +153,7 @@ hi()
           break;
         case "java":
           editor.getSession().setMode("ace/mode/java");
-          editor.setValue("public class Main() {\n    public static void main(String[] args){\n        System.out.print(\"Hello!\");\n  }\n}");
+          editor.setValue("import java.io.*;\n\nclass myCode {\n    public static void main(String[] args) throws java.lang.Exception\n    {\n\t\t\n\t\tSystem.out.println(\"Hello\");\n\t}\n}");
           languageid = 8 ;
           break;
         case "ruby":
