@@ -28,8 +28,12 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    problemsSolved   : Array, //for keeping track of problems solved
-    count            : Number  //for keeping track of number of problems solved
+    username: String,
+    name: String,
+    solved_count: {type:Number, default:0},
+    date_joined: { type: Date, default: Date.now }
+    //problemsSolved   : Array, //for keeping track of problems solved
+    //count            : Number  //for keeping track of number of problems solved
 });
 
 // methods ======================

@@ -1,0 +1,66 @@
+
+
+#twitterwidget {
+  width: 600px;
+  background: #fff;
+  border-radius: 5px;
+  margin: 20px auto 0px;
+  overflow: auto;
+  -webkit-box-shadow: 0 8px 40px -6px #a3a5a6;
+  -moz-box-shadow: 0 8px 40px -6px #a3a5a6;
+  box-shadow: 0 8px 40px -6px #a3a5a6;
+}
+
+#userprofile {
+  padding: 40px;
+  overflow: auto;
+}
+
+#userprofile img {
+  width: 120px;
+  height: auto;
+  display: block;
+  float: left;
+  border-radius: 5px;
+}
+
+h2 {
+  color: #010101;
+  padding: 30px 40px;
+  text-align: center;
+  font-size: 2em;
+}
+
+h2 a {
+  text-decoration: none;
+  color: #fc4400;
+  text-align: center;
+  font-size: 18px;
+  display: block;
+  padding: 5px 0px 0px 0px;
+}
+
+#info div {
+  border-top: 1px solid #f7f7f7;
+  border-left: 1px solid #f7f7f7;
+  float: left;
+  padding: 20px 0px;
+  width: 198px;
+  text-align: center;
+  font-size: 2.8em;
+  color: #2a2c2d;
+  font-weight: bold;
+}
+
+#info div:first-child {
+  border-left: none;
+}
+
+#info div span {
+  display: block;
+  font-size: 0.4em!important;
+  font-weight: normal!important;
+  text-transform: uppercase;
+  color: #2a2c2d;
+}
+

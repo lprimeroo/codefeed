@@ -1,16 +1,47 @@
+<!DOCTYPE html>
 
-<% data.forEach(function(dbData){ 
-var pid=dbData.problem_id
-var pname=dbData.problem_name
-var pstmt=dbData.problem_statement 
-	%>
-		  <%= pid %>
-		  <br>
-          <%= pname %>
-          <br>
-          <%= pstmt%>
-          <br>
-<% }); 
-%>
+  <head>
+    <meta charset="UTF-8">
+    <title>Welcome to Codefeed - Share and Solve</title>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/loggedinhome.css">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <style>
+      li.L0, li.L1, li.L2, li.L3,
+      li.L5, li.L6, li.L7, li.L8
+      { list-style-type: decimal !important }
+</style>
+  </head>
 
+  <body>
+
+    <nav class="nav">
+  <ul class="nav__wrap">
+      <li class="nav__list"><a href="/feed" class="nav__link">Home</a></li>
+      <li class="nav__list"><a href="/add" class="nav__link">Add a problem</a></li>
+      <li class="nav__list"><a href="/viewproblist" class="nav__link">View Solved</a></li>
+      <li class="nav__list"><a href="/loggedinhome" class="nav__link">View Problems</a></li>
+      <li class="nav__list"><a href="/showprofile" class="nav__link">Profile</a></li>
+      <li class="nav__list"><a href="/rankings" class="nav__link">Rankings</a></li>
+      <li class="nav__list"><a href="/logout" class="nav__link">Logout</a></li>
+
+   </ul>
+</nav>   
+
+<main class="content">
+    <% documents.forEach(function(documentObject) { 
+      %>
+    <h3>Problem ID : </h3><h5><%= documentObject.problem_id %></h5>
+    Code: <pre class="prettyprint linenums:1"><%= documentObject.code %></pre>
+    <h3>Execution time : </h3><p><%= documentObject.time %></p>
+   <h3>Date Solved on : </h3><p><%= documentObject.date_added %></p><br /><br />
+    <% }) %>
+</main>
+    
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>  
+    <script type="text/javascript" src="/loggedinhome.js"></script>  
+  </body>
+</html>
+ 
 

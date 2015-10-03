@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +9,19 @@
 <body>
 <nav class="nav">
    <ul class="nav__wrap">
-      <li class="nav__list"><a href="/loggedinhome" class="nav__link">Home</a></li>
+      <li class="nav__list"><a href="/feed" class="nav__link">Home</a></li>
       <li class="nav__list"><a href="/add" class="nav__link">Add a problem</a></li>
-      <li class="nav__list"><a href="/viewproblist" class="nav__link">View solved problems</a></li>
+      <li class="nav__list"><a href="/viewproblist" class="nav__link">View Solved</a></li>
+      <li class="nav__list"><a href="/loggedinhome" class="nav__link">View Problems</a></li>
+      <li class="nav__list"><a href="/showprofile" class="nav__link">Profile</a></li>
+      <li class="nav__list"><a href="/rankings" class="nav__link">Rankings</a></li>
       <li class="nav__list"><a href="/logout" class="nav__link">Logout</a></li>
+
    </ul>
 </nav> 
 
 <main class="content">
-  <input type="text" name="post" id="problem_name" placeholder="Test Cases Go here !" />
+  <input type="hidden" name="post" id="problem_id" value="<%= probid %>"/>
   <h2>Change Editor Theme : </h2><br />
   <select id="colors">
     <option value="github">Github</option>
@@ -162,11 +167,14 @@ hi()
         var langid = languageid;
         var codeF = editor.getValue() ;
         var stdin = $('#text-box').val();
- 
+        var probid = $('#problem_id').val();
+
+
         var json = {
             language: langid,
             code: codeF,
-            stdin:stdin
+            stdin:stdin,
+            problemid: probid
         };
         console.log(json);
  
@@ -178,16 +186,25 @@ hi()
     });
 
   $('.finalsubmit').click(function() {
-                var name = $('#problem_name').val();
-                console.log(name)
-                var json2 = {
-                    problem_name : name,
-                    output: DATA
-                 } 
-               $.post("/checkSolution",json2, function(dat,err,xh){
+              var langid = languageid;
+        var codeF = editor.getValue() ;
+        var probid = $('#problem_id').val();
 
-               });
-  });
+
+        var json = {
+            language: langid,
+            code: codeF,
+            problemid: probid
+        };
+        console.log(json);
+ 
+        $.post("/submit", json, function(data, error, xhr) {
+            var correctness = true ;
+            DATA = data.output;
+            document.getElementById("output").innerHTML = data.output;
+            window.location = "/feed" ;
+        });
+    });
 
 </script>
 </body>

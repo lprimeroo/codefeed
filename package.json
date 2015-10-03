@@ -1,5 +1,5 @@
 {
-  "name": "node-authentication",
+  "name": "codefeed",
   "main": "server.js",
   "dependencies": {
     "bcrypt-nodejs": "latest",
@@ -14,7 +14,7 @@
     "fs": "*",
     "gridfs-stream": "*",
     "method-override": "~1.0.0",
-    "mongoose": "^4.0.8",
+    "mongoose": "~4.0.0",
     "mongoose-auto-increment": "*",
     "morgan": "~1.0.0",
     "passport": "~0.1.17",

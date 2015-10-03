@@ -1,6 +1,3 @@
-// app/routes.js
-
-
 
 module.exports = function(app, passport) {
 
@@ -25,7 +22,7 @@ module.exports = function(app, passport) {
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/loggedinhome', // redirect to the secure profile section
+        successRedirect : '/checkprofile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -44,7 +41,7 @@ module.exports = function(app, passport) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/loggedinhome', // redirect to the secure profile section
+        successRedirect : '/checkprofile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -55,11 +52,7 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/solve', isLoggedIn, function(req, res) {
-        res.render('solve.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
+
 
     app.get('/add', isLoggedIn, function(req, res) {
         
@@ -83,6 +76,8 @@ module.exports = function(app, passport) {
         });
 
     });
+
+
 
   app.get('/viewproblem', isLoggedIn, function(req, res) {
     var mymodule = require('../views/viewproblem')
@@ -109,6 +104,114 @@ app.get('/loggedinhome', function(req, res) {
         });
     });
 
+app.get('/feed', function(req, res) {
+        var mongoose = require('mongoose');
+        var solution = require('../app/models/solution');
+        solution.find({}, function(err, docs) {
+            if(!err) {
+                console.log(docs) ;
+                res.render('../views/feed.ejs', {documents: docs});
+                
+                }});
+            });
+
+app.get('/viewproblist', isLoggedIn, function(req, res) {
+        var mongoose = require('mongoose');
+        var solution = require('../app/models/solution');
+        var currentuser=req.user.username;
+        solution.find({"username":currentuser}, function(err, docs) {
+            if(!err) {
+                console.log(docs) ;
+                res.render('../views/viewproblem.ejs', {documents: docs});
+                
+                }});
+        
+            });
+
+            
+
+
+       
+app.get('/showprofile', isLoggedIn, function(req, res) {
+        var mongoose = require('mongoose');
+        var User = require('../app/models/user');
+        var Solution = require('../app/models/solution');
+
+        User.find({"username": req.user.username}, function(err, docs) {
+            if(!err) {
+                Solution.find({"username": req.user.username}, function(error, docs2) {
+                    if(!error){
+                        res.render('../views/profile.ejs', {
+                        documents: docs ,
+                        documents2: docs2
+                        });
+                    }
+                });
+            }
+        });
+
+        
+    });
+
+app.get('/showprofile/:username',isLoggedIn, function(req,res){
+    var User = require('../app/models/user') ;
+    var Solution = require('../app/models/solution') ;
+    User.find({"username": req.params.username}, function(err, docs) {
+        if(!err) {
+                Solution.find({"username": req.params.username}, function(error, docs2) {
+                    if(!error){
+                        res.render('../views/profile.ejs', {
+                        documents: docs ,
+                        documents2: docs2
+                        });
+                    }
+                });
+            }
+    }) ;
+}) ;
+
+
+app.get('/solve/:problemid', isLoggedIn, function(req, res) {
+    res.render('../views/solve.ejs', {
+        probid : req.params.problemid // get the user out of session and pass to template
+    });
+});
+
+
+app.get('/rankings', isLoggedIn, function(req, res) {
+        var mongoose = require('mongoose');
+        var User = require('../app/models/user');
+
+    User.find().sort({ solved_count: 'descending' }).exec(function(err, ranks) { 
+    if(!err) {
+                console.log(ranks) ;
+                res.render('../views/rankings.ejs', {
+                    documents: ranks 
+                }); }});
+   });
+
+       
+
+
+       
+app.get('/checkprofile', isLoggedIn, function(req, res) {
+        var mongoose = require('mongoose');
+        var User = require('../app/models/user');
+        console.log("Current username is: "+req.user.username)
+        if((req.user.username || req.user.name) == null){
+            res.redirect('/updateprofile')
+        }
+        else{
+            res.redirect('/feed')
+        }
+            
+});
+ 
+
+app.get('/updateprofile', function(req, res) {
+        res.render('../views/signupprofile.ejs')
+    });
+
 
 app.get('/logout', function(req, res) {
         req.logout();
@@ -119,14 +222,17 @@ app.get('/logout', function(req, res) {
 // =====================================
     // FACEBOOK ROUTES =====================
     // =====================================
-    // route for facebook authentication and login
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : [ 'email', 'public_profile', 'user_friends' ], profileFields:['id', 'displayName', 'emails', 'birthday'], failureRedirect:'/login' }));
+    // route for facsuccessRedirect : '/loggedinhome',
+            
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : [ 'email'], failureRedirect:'/login' }, function(req, res){
+        
+        }));
 
     // handle the callback after facebook has authenticated the user
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect : '/loggedinhome',
-            failureRedirect : '/'
+            successRedirect:'/checkprofile',
+            failureRedirect:'/'
         }));
 
     // route for logging out

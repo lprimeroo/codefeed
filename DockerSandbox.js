@@ -13,10 +13,10 @@
          * @param {String} output_command: Used in case of compilers only, to execute the object code, send " " in case of interpretors
 */
 
-
-var DockerSandbox = function(timeout_value,path,folder,vm_name,compiler_name,file_name,code,output_command,languageName,e_arguments,stdin_data)
+var Problems = require('./app/models/problems')
+var DockerSandbox = function(timeout_value,path,folder,vm_name,compiler_name,file_name,code,output_command,languageName,e_arguments,stdin_data, problemid, currentuser)
 {
-
+    
     this.timeout_value=timeout_value;
     this.path=path;
     this.folder=folder;
@@ -27,7 +27,21 @@ var DockerSandbox = function(timeout_value,path,folder,vm_name,compiler_name,fil
     this.output_command=output_command;
     this.langName=languageName;
     this.extra_arguments=e_arguments;
+    if(stdin_data=='this_problem_is_being_submitted')
+    {
+        Problems.findOne({ "problemid": problemid }, function(err, problem) {
+    if (err) throw err;
+    console.log(problem)
+    this.stdin_data=problem.problem_input;
+    problem.save();
+});
+    }
+    else
+    {
     this.stdin_data=stdin_data;
+}
+    this.problemid=problemid;
+    this.currentuser=currentuser;
 }
 
 
@@ -181,6 +195,8 @@ DockerSandbox.prototype.execute = function(success)
 
         
             data=lines[0]
+            data.toString();
+            data = data.replace(/(\r\n|\n|\r)/gm,"");
             console.log(data)
 			var exectime=lines[1]
 
@@ -188,16 +204,7 @@ DockerSandbox.prototype.execute = function(success)
 
 
 // name is a member of myModule due to the export above
-var probid = probidmodule.probid;
-            var newSolution=new Solution();
-            newSolution.problem_id=sandbox.prob_id;
-            newSolution.code=sandbox.code;
-            newSolution.time=exectime;
-            newSolution.save(function(err){
-                if(err)
-                    throw err;
-                return newSolution;
-            })
+
 
 			console.log("Time: ")
 			console.log(exectime)

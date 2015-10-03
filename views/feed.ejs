@@ -5,12 +5,26 @@
     <title>Welcome to Codefeed - Share and Solve</title>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <link rel="stylesheet" href="/loggedinhome.css">
-    <style type="text/css">
-      h1 {
-        color : #fc4400;
-      }
+    <style>
+    h2 a {
+      text-decoration: none;
+      color: black;
+    }
+    h2 a:hover {
+      text-decoration: underline;
+      color: #001010 ;
+    }
+    h2 {
+      color: #fc4400;
+    }
+    h2 span{
+      color : black;
+      font-style: italic;
+    }
+    h2 span span, h4 span {
+      color : #fc4400;
+    }
     </style>
   </head>
 
@@ -31,16 +45,9 @@
 
 <main class="content">
     <% documents.forEach(function(documentObject) { %>
-    <h1><%= documentObject.problem_name %></h1>
-    <h2>ID:<%= documentObject.problemid %></h2>
-    <p><%= documentObject.problem_statement %></p>
-    <h2>Input</h2>
-    <pre class="prettyprint linenums:1"><%= documentObject.problem_input %></pre><br />
-    <h2>Output</h2>
-    <pre class="prettyprint linenums:1"><%= documentObject.problem_output %></pre><br />
-    <h2>Date Added</h2>
-    <p><%= documentObject.date_added %></p>
-    <a href="/solve/<%= documentObject.problemid %>"><button id="submit">Submit Solution</button></a><br /><br />
+    <h2><a href="/showprofile/<%= documentObject.username %>"><%= documentObject.username %></a> solved <span>Problem ID - <span><%= documentObject.problem_id %><span> <span></h2>
+    <h4><span><%= documentObject._statement %></span> in  <span><%= documentObject.time %> </span> seconds on  <%= documentObject.date_added %> . </h4>
+   <br /> <br />
     <% }) %>
 </main>
     
