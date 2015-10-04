@@ -78,15 +78,21 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 
+
 app.post('/submit', isLoggedIn, function(req, res)  {
     var language = req.body.language;
     var code = req.body.code;
     var probid=req.body.problemid;
-    var stdin="this_problem_is_being_submitted";
+    var stdin ;
+  Problems.findOne({ "problemid": probid }, function(err,problem) {
+    console.log(problem)
+    stdin = problem.problem_input;
+  console.log("This is stdin" + stdin) ;
+
 console.log("inside compile.."+req.user.username)
-    var currentuser=req.user.username;
+    var currentuser = req.user.username;
     //currentuser.toString();
-    //console.log("the currentuser is"+ currentuser)
+    console.log("the currentuser is"+ currentuser)
    
     
     var folder= 'temp/' + random(10); //folder in which the temporary folder will be saved
@@ -98,44 +104,40 @@ console.log("inside compile.."+req.user.username)
      
     //details of this are present in DockerSandbox.js
     var sandboxType = new sandBox(timeout_value,path,folder,vm_name,arr.compilerArray[language][0],arr.compilerArray[language][1],code,arr.compilerArray[language][2],arr.compilerArray[language][3],arr.compilerArray[language][4],stdin, probid, currentuser);
-
-
     //data will contain the output of the compiled/interpreted code
     //the result maybe normal program output, list of error messages or a Timeout error
+
     sandboxType.run(function(data,exec_time,err) {
         
 
 Problems.findOne({ "problem_output": data, "problemid":probid }, function(err, problem) {
-  if (err) throw err;
+  if (err) result =  err;
  
   console.log(problem)
   // object of the user
-  if(problem!=null)
-  {
+  if(problem!=null){
+            
+    result="success!"
     User.findOneAndUpdate({ "username": currentuser }, { $inc: { "solved_count": 1 }}, function(err, found){
       console.log(found)
     });
 
-
-
             statement=problem.problem_name;
             result="success!"
             var newSolution=new Solution();
-            newSolution.problem_id=probid;
-            newSolution.code=code;
-            newSolution.username=currentuser;
-            newSolution.time=exec_time;
-            newSolution.soloutput=data;
-            newSolution._statement=statement;
+            newSolution.problem_id = probid;
+            newSolution.code = code;
+            newSolution.username = currentuser;
+            newSolution.time = exec_time;
+            newSolution.soloutput = data;
+            newSolution._statement = statement;
             statement="";
             newSolution.save(function(err){
                 if(err)
                     throw err;
-                return newSolution;
             })
   }
-  else
-  {
+  else{
     result="failed"
   }
   
@@ -150,8 +152,7 @@ Problems.findOne({ "problem_output": data, "problemid":probid }, function(err, p
         //console.log("Data: received: "+ data)
 
     });
-
-
+});
 });
 
 app.post('/compile', isLoggedIn, function(req, res)  {
@@ -182,7 +183,7 @@ console.log("inside compile.."+req.user.username)
         
 
 Problems.findOne({ "problem_output": data, "problemid":probid }, function(err, problem) {
-  if (err) throw err;
+  if (err) result =  err;
  
   console.log(problem)
   // object of the user
@@ -210,7 +211,8 @@ Problems.findOne({ "problem_output": data, "problemid":probid }, function(err, p
 });
 
 
-app.post('/saveproblem',function(req, res)  {
+
+app.post('/saveproblem',isLoggedIn, function(req, res)  {
 
     var problem_name = req.body.problem_name; 
     var problem_statement = req.body.problem_statement;
@@ -222,6 +224,7 @@ app.post('/saveproblem',function(req, res)  {
             newProblem.problem_statement=problem_statement;
             newProblem.problem_input=problem_input;
             newProblem.problem_output=problem_output;
+            newProblem.problem_setter=req.user.username;
             newProblem.save(function(err){
                 if(err)
                     throw err;
@@ -232,16 +235,34 @@ app.post('/saveproblem',function(req, res)  {
   
 });
 
-app.post('/saveprofile', isLoggedIn, function(req, res)  {
+ app.post('/saveprofile', isLoggedIn, function(req, res)  {
 
     var username = req.body.user_username; 
     var uname = req.body.user_name;
-    User.findOne({$or:[{"facebook.email":req.user.facebook.email},{"local.email":req.user.local.email}]}, function (err, user){
+    console.log("received in json:"+username)
+    console.log("current fb email is:"+req.user.facebook.email)
+    console.log("current local email is:"+req.user.local.email)
+
+    if(req.user.local.email==null)
+    {
+    User.findOne({"facebook.email":req.user.facebook.email}, function (err, user){
+      console.log("Match found with email"+req.user.facebook.email)
       user.name = uname;
       user.username = username;
       user.save();
   });
+}
+else
+{
+    User.findOne({"local.email":req.user.local.email}, function (err, user){
+      console.log("Match found with email "+req.user.local.email)
+      user.name = uname;
+      user.username = username;
+      user.save();
+  });
+}
 });
+
 //load our routes and pass in our app and fully configured passport
 require('./app/routes.js')(app, passport);
 

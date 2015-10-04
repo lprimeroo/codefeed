@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/usercode/file.py", line 2, in <module>
+    num = int(raw_input())   
+ValueError: invalid literal for int() with base 10: 'undefined'

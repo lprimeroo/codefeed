@@ -24,23 +24,11 @@ var DockerSandbox = function(timeout_value,path,folder,vm_name,compiler_name,fil
     this.compiler_name=compiler_name;
     this.file_name=file_name;
     this.code = code;
+    this.problemid=problemid;
     this.output_command=output_command;
     this.langName=languageName;
     this.extra_arguments=e_arguments;
-    if(stdin_data=='this_problem_is_being_submitted')
-    {
-        Problems.findOne({ "problemid": problemid }, function(err, problem) {
-    if (err) throw err;
-    console.log(problem)
-    this.stdin_data=problem.problem_input;
-    problem.save();
-});
-    }
-    else
-    {
     this.stdin_data=stdin_data;
-}
-    this.problemid=problemid;
     this.currentuser=currentuser;
 }
 
@@ -143,6 +131,7 @@ DockerSandbox.prototype.prepare = function(success)
 
 DockerSandbox.prototype.execute = function(success)
 {
+
     var exec = require('child_process').exec;
     var mongoose = require('mongoose');
     var Solution=require('./app/models/solution');
@@ -150,7 +139,7 @@ DockerSandbox.prototype.execute = function(success)
     var fs = require('fs');
     var myC = 0; //variable to enforce the timeout_value
     var sandbox = this;
-
+console.log("input extracted is"+sandbox.stdin_data)
     var probidmodule = require('./views/solve.ejs');
     //this statement is what is executed
     var st = this.path+'DockerTimeout.sh ' + this.timeout_value + 's -u mysql -e \'NODE_PATH=/usr/local/lib/node_modules\' -i -t -v  "' + this.path + this.folder + '":/usercode ' + this.vm_name + ' /usercode/script.sh ' + this.compiler_name + ' ' + this.file_name + ' ' + this.output_command+ ' ' + this.extra_arguments;
@@ -181,6 +170,7 @@ DockerSandbox.prototype.execute = function(success)
             else if (myC < sandbox.timeout_value) 
             {
                 console.log("DONE")
+
                 //check for possible errors
                 fs.readFile(sandbox.path + sandbox.folder + '/errors', 'utf8', function(err2, data2) 
                 {
@@ -197,7 +187,7 @@ DockerSandbox.prototype.execute = function(success)
             data=lines[0]
             data.toString();
             data = data.replace(/(\r\n|\n|\r)/gm,"");
-            console.log(data)
+            console.log("this is"+data)
 			var exectime=lines[1]
 
 

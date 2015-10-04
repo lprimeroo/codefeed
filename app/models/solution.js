@@ -7,6 +7,7 @@ var solutionSchema = mongoose.Schema({
 	time: Number,
 	username: String,
 	soloutput: String,
+	problem_setter: String,
 	date_added: { type: Date, default: Date.now }
 });
 

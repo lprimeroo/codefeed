@@ -11,6 +11,7 @@ var problemsSchema = mongoose.Schema({
 	problem_statement: String,
 	problem_input: String,
 	problem_output: String,
+	problem_setter: String,
 	date_added: { type: Date, default: Date.now }
 });
 

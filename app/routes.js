@@ -198,7 +198,7 @@ app.get('/checkprofile', isLoggedIn, function(req, res) {
         var mongoose = require('mongoose');
         var User = require('../app/models/user');
         console.log("Current username is: "+req.user.username)
-        if((req.user.username || req.user.name) == null){
+        if((req.user.username ==null)|| (req.user.name == null)){
             res.redirect('/updateprofile')
         }
         else{
@@ -209,8 +209,16 @@ app.get('/checkprofile', isLoggedIn, function(req, res) {
  
 
 app.get('/updateprofile', function(req, res) {
-        res.render('../views/signupprofile.ejs')
-    });
+
+
+        res.render('../views/signupprofile.ejs', {
+            user : req.user // get the user out of session and pass to template
+        }); 
+        res.render('../views/signupprofile.ejs'), {
+            user : req.user // get the user out of session and pass to template
+        }; 
+
+        });
 
 
 app.get('/logout', function(req, res) {
@@ -218,7 +226,22 @@ app.get('/logout', function(req, res) {
         res.redirect('/');
     });
 
+app.get('/settersolutions', isLoggedIn, function(req, res) {
+        var mongoose = require('mongoose');
+        var Solution = require('../app/models/solution');
 
+
+        Solution.find({"problem_setter": req.user.username}, function(err, docs) {
+            if(!err) {
+                console.log(docs) ;
+                res.render('../views/myproblems.ejs', {
+                    documents: docs 
+                });
+            }
+        });
+
+        
+    });
 // =====================================
     // FACEBOOK ROUTES =====================
     // =====================================
