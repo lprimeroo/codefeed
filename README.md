@@ -19,3 +19,40 @@ of using an external API .
  For the next step, navigate to `config/database.js` and replace the existing DB URL with your cloud hosted URL . 
 * MongoDB is used here . 
 
+Next , you need to install the project dependencies . Navigate to the root folder and run ,
+```
+sudo npm install .
+```
+Run,
+```
+node server
+```
+to launch the website .
+
+Some words of caution ,
+* Make sure you have stable internet connection while setting up the Dockerfile .
+* Make sure your `vm_name ` in the file `server.js` matches with the Docker image name .
+* If your code doesn't compile and return the result , there's a 90% chance that you have a slow internet connection . To tackle that, increase the `timeout_value` in `server.js` .
+* For Linux distro users , replace `gtimeout` in `DockerTimeout.sh` with `timeout` . `gtimeout` is only supported for OSX platform .
+* Do not touch the `Payload` folder while setting up .
+
+
+## Features
+
+* Supports `Python`, `Ruby`, `C++`, `C` and `Java` .
+* Rankings of users .
+* Ability for the user to add problems .
+* Detecting redundant submissions .
+* Facebook login .
+* View all solved problems .
+* Profiles .
+
+P.s : Still has a lot of room for improvements .
+
+
+## Notes
+
+* To add more languages, fiddle with `compilers.js` and add its dependency to `Dockerfile` and update the image .
+* To play around with the website UI, use templates in the `view`folder .
+* To play around with the existing schema or FB authentication , checkout `config` folder .
+
