@@ -51,7 +51,7 @@ h1 {
 .nav__list {
   list-style: none;
   display: inline-block;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   margin-right: 20px;
 }
 @media all and (max-width: 40em) {

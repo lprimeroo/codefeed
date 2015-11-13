@@ -107,13 +107,14 @@ app.get('/loggedinhome', function(req, res) {
 app.get('/feed', function(req, res) {
         var mongoose = require('mongoose');
         var solution = require('../app/models/solution');
-        solution.find({}, function(err, docs) {
+        solution.find().sort('-date_added').find(function(err, docs) {
             if(!err) {
                 console.log(docs) ;
                 res.render('../views/feed.ejs', {documents: docs});
                 
-                }});
+                }
             });
+    });
 
 app.get('/viewproblist', isLoggedIn, function(req, res) {
         var mongoose = require('mongoose');

@@ -131,6 +131,7 @@ Problems.findOne({ "problem_output": data, "problemid":probid }, function(err, p
             newSolution.time = exec_time;
             newSolution.soloutput = data;
             newSolution._statement = statement;
+            newSolution.problem_setter=problem.problem_setter ;
             statement="";
             newSolution.save(function(err){
                 if(err)
