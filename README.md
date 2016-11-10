@@ -59,7 +59,10 @@ P.s : Still has a lot of room for improvements .
 
 ##Authors
 [Sarthak Munshi](https://github.com/saru95)
+
 [Shivani Singh](https://github.com/shivani258)
 
 ## A later stage P.S.
 We wrote this when we were in our sophomore year . Hence, the scarcity of tests , style guide and modularity . This project works just fine but isn't maintained anymmore as it was done as a learning project .
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
